@@ -1,0 +1,47 @@
+%% DISPLAY KO TABLE FOR TRs
+%CHANGE ACCORDING TO MODEL YOU WANT TO TEST
+modeltable = ________;
+
+temps = table('Size',[7,3],'VariableTypes',["string","double","double"],'VariableNames',["KO","KO (mostly 99.9% except b3961)","Actual"])
+
+optimizeCbModel(modeltable);
+temps(1,:)={'WT',ans.f,0.71}
+
+modelko=modeltable;
+ind = find(contains(modelko.rxns,'EX_TR_b4401'));
+modelko.ub(ind)=0.001*(modeltable.ub(ind));
+optimizeCbModel(modelko);
+temps(2,:)={'b4401',ans.f,0.686};
+
+modelko=modeltable;
+ind = find(contains(modelko.rxns,'EX_TR_b1334'));
+modelko.ub(ind)=0.001*(modeltable.ub(ind));
+optimizeCbModel(modelko);
+temps(3,:)={'b1334',ans.f,0.635};
+
+modelko=modeltable;
+ind = find(contains(modelko.rxns,'EX_TR_b4401'));
+modelko.ub(ind)=0.001*(modeltable.ub(ind));
+ind = find(contains(modelko.rxns,'EX_TR_b1334'));
+modelko.ub(ind)=0.001*(modeltable.ub(ind));
+optimizeCbModel(modelko);
+temps(4,:)={'b4401 and b1334',ans.f,0.648};
+
+modelko=modeltable;
+ind = find(contains(modelko.rxns,'EX_TR_b0564'));
+modelko.ub(ind)=0.001*(modeltable.ub(ind));
+optimizeCbModel(modelko);
+temps(5,:)={'b0564',ans.f,0.636};
+
+modelko=modeltable;
+ind = find(contains(modelko.rxns,'EX_TR_b3961'));
+%modelko.ub(ind)=0.001*(modeltable.ub(ind));
+modelko.ub(ind)=0.003032*(modeltable.ub(ind));
+optimizeCbModel(modelko);
+temps(6,:)={'b3961',ans.f,0.637};
+
+modelko=modeltable;
+ind = find(contains(modelko.rxns,'EX_TR_b4062'));
+modelko.ub(ind)=0.001*(modeltable.ub(ind));
+optimizeCbModel(modelko);
+temps(7,:)={'b4062',ans.f,0.724}
