@@ -1,12 +1,14 @@
 %% CALCULATE FLUX SLOPE AND GET TOP EXCHANGE RXNS
 % permutate 1000 times and get avg of positive slopes
 
-perm100flux = cell(1000,2);
-q=cell(length(modelx.rxns),1000); %modelx obtained from lycopenemodel.mat code
-perm100=readmatrix("randomperm100_427.csv"); %matrix of randomly generated upper bounds for the 427 reactions (0/10/100)
+% upload matrix of bounds
+perm100flux = cell(1000,2); % create empty flux
+q=cell(length(modelx.rxns),1000); % modelx obtained from lycopenemodel.mat code
+perm100=readmatrix("randomperm100_427.csv"); % matrix of randomly generated upper bounds for the 427 reactions (0/10/100)
 perm100(1,:)=[];
 perm100(:,1)=[];
 
+% get fluxslopes permuted 1000 times
 list1=[];
 for i = 1:1000   
 modelx=modelt4; %modelt4 obtained from lycopenemodel.mat code
@@ -41,6 +43,7 @@ indexc=find(ismember(modelx.rxns,excrxn));
 qexc = q(indexc,:);
 qmat=cell2mat(qexc);
 
+% select only positive values and get average of positive values
 posValue=cell(length(excrxn),1);
 avgValue=cell(length(excrxn),1);
 for i =1:length(excrxn)
@@ -49,11 +52,12 @@ posValue(i,1)={temp(qmat(i,:)>0)};
 avgValue(i,1) = {mean(posValue{i})};
 end
 
-% find bp above threshold
+% get threshold
 avgValueMatrix = cell2mat(avgValue)
 avgValueMatrix(isnan(avgValueMatrix))=[];
 threshold=mean(avgValueMatrix) % get threshold 
 
+% find bp above threshold
 bpValue=cell(length(excrxn),1);
 for i =1:length(excrxn)
 temp=qmat(i,:)';
@@ -71,15 +75,15 @@ temp=qmat(i,:)';
 bpValue_s(i,1)={temp(qmat(i,:)>10)};
 end
 
-bpind_s = find((~cellfun('isempty',bpValue_s)));
+%bpind_s = find((~cellfun('isempty',bpValue_s)));
 %bpValuenew_s = bpValue_s(~cellfun('isempty',bpValue_s));
-%boxplotGroup(bpValuenew_s')
+%boxplotGroup(bpValuenew_s') % plot boxplot
 
 % see rxns from excrxn(bpind_s)
 excrxn(bpind_s)
 
 
-%find most number of bpValue
+% find most number of bpValue
 bpList=[];
 for x = 1:length(posValue)
    bpList = [bpList,length(posValue{x})]
