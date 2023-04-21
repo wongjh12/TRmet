@@ -441,8 +441,8 @@ modelx.c(find(modelx.c))=0;
 modelx.c(find(ismember(modelx.rxns,'EX_LYCOP')))=1;
 modelx.ub(find(ismember(modelx.rxns,'EX_TR_b0080_transp')))=100;
 for ii= 1:length(excrxn1)
-modelx.ub(find(ismember(modelx.rxns,excrxn1(ii))))=0;
-optimizeCbModel(modelx)
-perm100flux(i,1)= num2cell(ans.f);
-perm100flux(i,2)=num2cell(ans.x(1005));
+	modelx.ub(find(ismember(modelx.rxns,excrxn1(ii))))=0;
+	optimizeCbModel(modelx)
+	perm100flux(i,1)= num2cell(ans.f);
+	perm100flux(i,2)=num2cell(ans.x(1005));
 end
