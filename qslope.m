@@ -11,20 +11,20 @@ perm100(:,1)=[];
 % get fluxslopes permuted 1000 times
 list1=[];
 for i = 1:1000   
-modelx=modelt4; %modelt4 obtained from lycopenemodel.mat code
-% in this case don't need but use if want to set objective, lb,ub 
-%modelx.lb(find(ismember(modelx.rxns,'Ec_biomass_iAF1260_core_59p81M')))=0.6337*0.5;
-%modelx.c(find(ismember(modelx.rxns,'Ec_biomass_iAF1260_core_59p81M')))=0;
-%modelx.c(find(ismember(modelx.rxns,'EX_LYCOP')))=1;
-%modelx.ub(find(ismember(modelx.rxns,'EX_TR_b0080_transp')))=100;
+ modelx=modelt4; %modelt4 obtained from lycopenemodel.mat code
+ % in this case don't need but use if want to set objective, lb,ub 
+ %modelx.lb(find(ismember(modelx.rxns,'Ec_biomass_iAF1260_core_59p81M')))=0.6337*0.5;
+ %modelx.c(find(ismember(modelx.rxns,'Ec_biomass_iAF1260_core_59p81M')))=0;
+ %modelx.c(find(ismember(modelx.rxns,'EX_LYCOP')))=1;
+ %modelx.ub(find(ismember(modelx.rxns,'EX_TR_b0080_transp')))=100;
 for ii= 1:length(excrxn) %excrxn can be uploaded to workspace
-if perm100(i,ii) ==0
-modelx.ub(find(ismember(modelx.rxns,excrxn(ii))))=0;
-elseif perm100(i,ii) ==10
-modelx.ub(find(ismember(modelx.rxns,excrxn(ii))))=10;
-else perm100(i,ii) ==100
-modelx.ub(find(ismember(modelx.rxns,excrxn(ii))))=100;
-end
+ if perm100(i,ii) ==0
+  modelx.ub(find(ismember(modelx.rxns,excrxn(ii))))=0;
+  elseif perm100(i,ii) ==10
+  modelx.ub(find(ismember(modelx.rxns,excrxn(ii))))=10;
+ else perm100(i,ii) ==100
+  modelx.ub(find(ismember(modelx.rxns,excrxn(ii))))=100;
+ end
 end
 sol = optimizeCbModel(modelx)
 perm100flux(i,1)= num2cell(sol.f);
@@ -47,9 +47,9 @@ qmat=cell2mat(qexc);
 posValue=cell(length(excrxn),1);
 avgValue=cell(length(excrxn),1);
 for i =1:length(excrxn)
-temp=qmat(i,:);
-posValue(i,1)={temp(qmat(i,:)>0)};
-avgValue(i,1) = {mean(posValue{i})};
+ temp=qmat(i,:);
+ posValue(i,1)={temp(qmat(i,:)>0)};
+ avgValue(i,1) = {mean(posValue{i})};
 end
 
 % get threshold
@@ -60,8 +60,8 @@ threshold=mean(avgValueMatrix) % get threshold
 % find bp above threshold
 bpValue=cell(length(excrxn),1);
 for i =1:length(excrxn)
-temp=qmat(i,:)';
-bpValue(i,1)={temp(qmat(i,:)>threshold)};
+ temp=qmat(i,:)';
+ bpValue(i,1)={temp(qmat(i,:)>threshold)};
 end
 
 bpind= find((~cellfun('isempty',bpValue)));
@@ -71,8 +71,8 @@ boxplotGroup(bpValuenew') % plot boxplot
 % find bp above 10
 bpValue_s=cell(length(excrxn),1);
 for i =1:length(excrxn)
-temp=qmat(i,:)';
-bpValue_s(i,1)={temp(qmat(i,:)>10)};
+ temp=qmat(i,:)';
+ bpValue_s(i,1)={temp(qmat(i,:)>10)};
 end
 
 %bpind_s = find((~cellfun('isempty',bpValue_s)));
