@@ -30,6 +30,7 @@ irrevmodel = addReaction(irrevmodel,'EX_LYCOP','reactionName','Lycopene exchange
 
 % set lb for lycopene
 irrevmodel.lb(2965)=0.001
+#irrevmodel.lb(find(ismember(irrevmodel.rxns,'EX_LYCOP')))
 
 % upload regulator sign file to set TR signs
 data = readtable("RegulatorSign_full.csv");
